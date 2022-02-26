@@ -13,9 +13,13 @@ export default defineConfig({
   plugins: [
     vue(),
     Components({
-      resolvers: [IconsResolver()],
+      resolvers: [
+        IconsResolver({
+          prefix: 'Icon',
+        }),
+      ],
       directoryAsNamespace: true,
-      dts: true,
+      dts: 'src/components.d.ts',
     }),
     Icons(),
     AutoImport({
@@ -24,7 +28,10 @@ export default defineConfig({
         // presets
         'vue',
         'vue-router',
+        '@vueuse/head',
+        '@vueuse/core',
       ],
+      dts: 'src/auto-imports.d.ts',
       eslintrc: {
         enabled: true, // Default `false`
       },
