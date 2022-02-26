@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "nprogress": "^0.2.0",
     "pinia": "^2.0.11",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12"
@@ -32,7 +33,6 @@
     "unplugin-vue-components": "^0.17.21",
     "vite": "^2.8.4",
     "vite-plugin-inspect": "^0.4.3",
-    "vite-plugin-vue-layouts": "^0.6.0",
     "vue-tsc": "^0.31.4"
   }
 }
