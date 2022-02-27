@@ -17,7 +17,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
       - run: npm install -g yarn
-      - run: yarn ci # install dependencies
+      - run: yarn install --frozen-lockfile # install dependencies
       - run: yarn run build --if-present # build project
       - run: yarn run test:unit # run tests
   mergepal-merge: # merge when build and testing is successful
