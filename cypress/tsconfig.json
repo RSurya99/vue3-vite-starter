@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["./integration/**/*", "./support/**/*"],
+  "include": ["./integration/**/*", "./support/**/*", "../node_modules/cypress"],
   "compilerOptions": {
     "isolatedModules": false,
     "target": "es5",
