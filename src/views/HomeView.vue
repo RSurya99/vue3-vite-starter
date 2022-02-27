@@ -23,7 +23,9 @@ const increment = () => counterStore.increment()
       <h2>Counter</h2>
       <p>counter : {{ counter }}</p>
       <p>doubleCount : {{ doubleCount }}</p>
-      <button @click="increment">Increment</button>
+      <button @click="increment">
+        <IconMdiPlusCircle />
+      </button>
     </div>
 
     <button class="p-2 bg-gray-50 shadow rounded" @click="toggleDark()">
