@@ -1,5 +1,0 @@
-whitelist:
-  - good-to-go
-blacklist:
-  - wip
-method: merge #available options "merge" | "squash" | "rebase"
