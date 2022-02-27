@@ -1,0 +1,29 @@
+name: Auto Deploy
+on:
+  push:
+    branches: [master] # run on pushes to master
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # setup the repository in the runner
+      - name: Setup Node.js # setup Node.js in the runner
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - run: yarn ci # install dependencies
+      - run: yarn run build --if-present # build the project
+      - run: yarn run test:unit # run the tests
+      # deploy site to netlify using secrets created on repository
+      - uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=dist --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
