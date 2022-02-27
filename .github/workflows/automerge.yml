@@ -18,8 +18,8 @@ jobs:
           restore-keys: ${{ runner.os }}-node-
       - run: npm install -g yarn
       - run: yarn install --frozen-lockfile # install dependencies
-      - run: yarn run build --if-present # build project
-      - run: yarn run test:unit # run tests
+      - run: yarn build --if-present # build project
+      - run: yarn test:unit # run tests
   mergepal-merge: # merge when build and testing is successful
     runs-on: ubuntu-latest
     needs:

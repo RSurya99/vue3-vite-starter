@@ -18,8 +18,8 @@ jobs:
           restore-keys: ${{ runner.os }}-node-
       - run: npm install -g yarn
       - run: yarn install --frozen-lockfile # install dependencies
-      - run: yarn run build --if-present # build the project
-      - run: yarn run test:unit # run the tests
+      - run: yarn build --if-present # build the project
+      - run: yarn test:unit # run the tests
       # deploy site to netlify using secrets created on repository
       - uses: netlify/actions/cli@master
         env:
