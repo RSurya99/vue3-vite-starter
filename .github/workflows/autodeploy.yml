@@ -2,6 +2,7 @@ name: Auto Deploy
 on:
   push:
     branches: [main] # run on pushes to main
+jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
