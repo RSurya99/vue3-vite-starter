@@ -99,7 +99,19 @@ We are using Vueuse to toggle DarkMode, you can find it in :
 /src/composables/dark.ts
 ```
 
-WIP documentation on how to change the theme
+How to use :
+```vue
+<script setup lang="ts">
+import { toggleDark } from '@/composables'
+</script>
+<template>
+  <div>
+    <button @click="toggleDark()">
+      Toggle Theme
+    </button>
+  </div>
+</template>
+```
 
 
 ### Internalization
@@ -107,12 +119,87 @@ WIP
 
 
 ### Icons
-WIP
+This project is using unplugin-icons with unplugin-vue-components for auto importing  
+You can see collection icon list in : https://icones.js.org/  
+In this project, prefix is configured to "Icon", here are example use of it :
 
+```vue
+<IconProviderIconName />
+
+<IconMdiChevronDown />
+
+<IconLogoGoogleIcon />
+```
+
+you can see the config of this in `vite.config.js`
+```ts
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    Components({
+      resolvers: [
+        IconsResolver({
+          prefix: 'Icon',
+        }),
+      ],
+      directoryAsNamespace: true,
+      dts: 'src/components.d.ts',
+    }),
+    Icons(),
+  ],
+})
+```
 
 ### API Auto Importing
-WIP
+We use `unplugin-auto-import` for API auto importing, you can also use this to import API in package. Here are the example of configuration :
+```ts
+AutoImport({
+  // targets to transform
+  include: [
+    /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+    /\.vue$/, /\.vue\?vue/, // .vue
+    /\.md$/, // .md  
+  ],
+  // global imports to register
+  imports: [
+    // presets
+    'vue',
+    'vue-router',
+    // custom
+    {
+      '@vueuse/core': [
+        // named imports
+        'useMouse', // import { useMouse } from '@vueuse/core',
+        // alias
+        ['useFetch', 'useMyFetch'] // import { useFetch as useMyFetch } from '@vueuse/core',
+      ],
+      'axios': [
+        // default imports
+        ['default', 'axios'] // import { default as axios } from 'axios',
+      ],
+      '[package-name]': [
+        '[import-names]',
+        // alias
+        ['[from]', '[alias]']
+      ]
+    }
+  ],
+  // Generate corresponding .eslintrc-auto-import.json file.
+  // eslint globals Docs - https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals
+  eslintrc: {
+    enabled: false, // Default `false`
+    filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
+    globalsPropValue: true // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
+  },
+  // custom resolvers
+  // see https://github.com/antfu/unplugin-auto-import/pull/23/
+  resolvers: [
+    /* ... */
+  ]
+})
+```
 
 
 ## License
-This project is licensed under the MIT license, Copyright (c) 2022 Alfian Dwi Nugraha. For more information see the [LICENSE](LICENSE.md) file.
+This project is licensed under the MIT license, Copyright (c) 2022 Rafli Surya Pratama. For more information see the [LICENSE](./LICENSE) file.
