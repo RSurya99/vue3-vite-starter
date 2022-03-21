@@ -25,7 +25,6 @@ A Vue 3 starter template or boilerplate for your new Vue projects using Vite.
 - [x] 🗂️ [Vue Composition Collection (Vueuse)](https://vueuse.org/)
 
 - [x] 🦾 [TypeScript](https://www.typescriptlang.org/)
-  
 - [x] Code Styling with Eslint and Prettier
 
 - [x] ⚙️ Unit Testing with [Vitest](https://github.com/vitest-dev/vitest) and E2E Testing with [Cypress](https://cypress.io/)
@@ -34,13 +33,13 @@ A Vue 3 starter template or boilerplate for your new Vue projects using Vite.
 
 - [x] ☁️ Deploy on Netlify, zero-config
 
-- [ ] 🌍 Internalization with I18n
-  
+- [x] 🌍 Internationalization with I18n
 - [ ] 📡 Http request with [axios](https://axios-http.com/)
 
 <br>
 
 ## Preview
+
 WIP
 
 ## Quick Start
@@ -58,20 +57,23 @@ WIP
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
 
 ## Deploy on Netlify
+
 There are 2 way to upload to netlify within this project. You can use CI/CD for auto deploy, or deploy it directly to netlify
 
 ### Using Github Actions to Deploy
+
 - Create new Netlify project and add your repository to it
 - Inside Netlify dashboard, go to site settings and copy `API ID` inside Site Information menu (save it on notepad or anything else)
 - Click your profile -> open `user settings` -> Applications -> Click `New access token` -> genereate -> and copy the token
--  Go to Github profile settings -> Developer Settings -> Personal access token -> Generate new token -> copy it
--  Then, go to your github project repository -> Settings -> Secrets -> Actions -> and add 3 new repository secret
-    1. NETLIFY_AUTH_TOKEN = YOUR_NETLIFY_PERSONAL_ACCESS_TOKEN
-    2. NETLIFY_SITE_ID = YOUR_NETLIFY_PROJECT_API_ID
-    3. PERSONAL_TOKEN = YOUR_GITHUB_ACCESS_TOKEN
+- Go to Github profile settings -> Developer Settings -> Personal access token -> Generate new token -> copy it
+- Then, go to your github project repository -> Settings -> Secrets -> Actions -> and add 3 new repository secret
+  1. NETLIFY_AUTH_TOKEN = YOUR_NETLIFY_PERSONAL_ACCESS_TOKEN
+  2. NETLIFY_SITE_ID = YOUR_NETLIFY_PROJECT_API_ID
+  3. PERSONAL_TOKEN = YOUR_GITHUB_ACCESS_TOKEN
 - Save it, and try to push new commit to your repository (the CI/CD scripts will automatically run, and if there's no error in testing, it will automatically deploy your project to netlify)
 
 ### Direct Deploy in Netlify
+
 - Go to Netlify dashboard and create new project
 - Sync it with your repo and wait a minute for netlify to auto-deploy the project
 
@@ -80,6 +82,7 @@ There are 2 way to upload to netlify within this project. You can use CI/CD for 
 ## Notes
 
 ### Styles
+
 You can find Tailwindcss import in :
 
 ```bash
@@ -93,6 +96,7 @@ For custom styles, you can add it in :
 ```
 
 ### Theme Changer
+
 We are using Vueuse to toggle DarkMode, you can find it in :
 
 ```bash
@@ -100,25 +104,83 @@ We are using Vueuse to toggle DarkMode, you can find it in :
 ```
 
 How to use :
+
 ```vue
 <script setup lang="ts">
 import { toggleDark } from '@/composables'
 </script>
 <template>
   <div>
-    <button @click="toggleDark()">
-      Toggle Theme
-    </button>
+    <button @click="toggleDark()">Toggle Theme</button>
   </div>
 </template>
 ```
 
+### Internationalization
 
-### Internalization
-WIP
+Internationalization is a plugin that allows you to switch between languages. this lib in :
 
+```bash
+/path/to/modules/i18n.ts
+```
+
+To use this plugin, is quite easy, you just need to add new translation on locales (if you want to add another language just create a new file), and then you can import it and use it in component like this:
+
+`locales/en.yml`
+
+```yml
+app:
+  title: Vue 3 Vite Starter
+```
+
+`App.vue`
+
+```vue
+<script setup lang="ts">
+const { t } = useI18n()
+</script>
+<template>
+  <h1>{{ t('app.title') }}</h1>
+</template>
+```
+
+here are the config in `vite.config.js`
+
+```ts
+import VueI18n from '@intlify/vite-plugin-vue-i18n'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    AutoImport({
+      imports: [
+        'vue',
+        // add vue-i18n for auto importing
+        'vue-i18n',
+      ],
+      dts: 'src/auto-imports.d.ts',
+      eslintrc: {
+        enabled: true, // Default `false`
+      },
+    }),
+    // vue i18n config here
+    // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
+    VueI18n({
+      runtimeOnly: true,
+      compositionOnly: true,
+      include: [path.resolve(__dirname, 'locales/**')],
+    }),
+  ],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+})
+```
 
 ### Icons
+
 This project is using unplugin-icons with unplugin-vue-components for auto importing  
 You can see collection icon list in : https://icones.js.org/  
 In this project, prefix is configured to "Icon", here are example use of it :
@@ -132,8 +194,8 @@ In this project, prefix is configured to "Icon", here are example use of it :
 ```
 
 you can see the config of this in `vite.config.js`
-```ts
 
+```ts
 export default defineConfig({
   plugins: [
     vue(),
@@ -152,14 +214,17 @@ export default defineConfig({
 ```
 
 ### API Auto Importing
+
 We use `unplugin-auto-import` for API auto importing, you can also use this to import API in package. Here are the example of configuration :
+
 ```ts
 AutoImport({
   // targets to transform
   include: [
     /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
-    /\.vue$/, /\.vue\?vue/, // .vue
-    /\.md$/, // .md  
+    /\.vue$/,
+    /\.vue\?vue/, // .vue
+    /\.md$/, // .md
   ],
   // global imports to register
   imports: [
@@ -172,34 +237,34 @@ AutoImport({
         // named imports
         'useMouse', // import { useMouse } from '@vueuse/core',
         // alias
-        ['useFetch', 'useMyFetch'] // import { useFetch as useMyFetch } from '@vueuse/core',
+        ['useFetch', 'useMyFetch'], // import { useFetch as useMyFetch } from '@vueuse/core',
       ],
-      'axios': [
+      axios: [
         // default imports
-        ['default', 'axios'] // import { default as axios } from 'axios',
+        ['default', 'axios'], // import { default as axios } from 'axios',
       ],
       '[package-name]': [
         '[import-names]',
         // alias
-        ['[from]', '[alias]']
-      ]
-    }
+        ['[from]', '[alias]'],
+      ],
+    },
   ],
   // Generate corresponding .eslintrc-auto-import.json file.
   // eslint globals Docs - https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals
   eslintrc: {
     enabled: false, // Default `false`
     filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
-    globalsPropValue: true // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
+    globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
   },
   // custom resolvers
   // see https://github.com/antfu/unplugin-auto-import/pull/23/
   resolvers: [
     /* ... */
-  ]
+  ],
 })
 ```
 
-
 ## License
+
 This project is licensed under the MIT license, Copyright (c) 2022 Rafli Surya Pratama. For more information see the [LICENSE](./LICENSE) file.

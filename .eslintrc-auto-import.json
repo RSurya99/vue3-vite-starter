@@ -128,6 +128,7 @@
     "useFullscreen": true,
     "useGeolocation": true,
     "useHead": true,
+    "useI18n": true,
     "useIdle": true,
     "useInfiniteScroll": true,
     "useIntersectionObserver": true,

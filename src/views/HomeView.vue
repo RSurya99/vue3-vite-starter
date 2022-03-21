@@ -8,6 +8,8 @@ const counter = computed(() => counterStore.counter)
 const doubleCount = computed(() => counterStore.doubleCount)
 
 const increment = () => counterStore.increment()
+
+const { t } = useI18n()
 </script>
 <template>
   <div>
@@ -17,7 +19,7 @@ const increment = () => counterStore.increment()
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </header>
-    <h1 class="text-gray-700 dark:text-indigo-500">This is home page</h1>
+    <h1 class="text-gray-700 dark:text-indigo-500">{{ t('app.title') }}</h1>
 
     <div>
       <h2>Counter</h2>

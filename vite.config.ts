@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'url'
+import path from 'path'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -7,6 +8,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
+import VueI18n from '@intlify/vite-plugin-vue-i18n'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,6 +30,7 @@ export default defineConfig({
         // presets
         'vue',
         'vue-router',
+        'vue-i18n',
         '@vueuse/head',
         '@vueuse/core',
       ],
@@ -36,7 +39,17 @@ export default defineConfig({
         enabled: true, // Default `false`
       },
     }),
-    Inspect(), // only applies in dev mode
+    // vue i18n config here
+    // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
+    VueI18n({
+      runtimeOnly: true,
+      compositionOnly: true,
+      include: [path.resolve(__dirname, 'locales/**')],
+    }),
+    Inspect({
+      // change this to enable inspect for debugging
+      enabled: false,
+    }),
   ],
   resolve: {
     alias: {
