@@ -34,7 +34,8 @@ A Vue 3 starter template or boilerplate for your new Vue projects using Vite.
 - [x] ☁️ Deploy on Netlify, zero-config
 
 - [x] 🌍 Internationalization with I18n
-- [ ] 📡 Http request with [axios](https://axios-http.com/)
+
+- [x] 📡 Http request with [axios](https://axios-http.com/)
 
 <br>
 
@@ -114,6 +115,59 @@ import { toggleDark } from '@/composables'
     <button @click="toggleDark()">Toggle Theme</button>
   </div>
 </template>
+```
+
+### HTTP Request (Axios)
+
+We use axios for HTTP request, because it's more easy to use then javascript `fetch()` method.
+To use this you need to create a service and then you can call it in store or component
+
+Example use :
+`services/ApiService.ts`
+
+```ts
+import axios from 'axios'
+
+const instance = axios.create({
+  baseURL: 'https://jsonplaceholder.typicode.com',
+  timeout: 10000,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
+})
+
+export default {
+  apiGetAllUsers() {
+    return instance.get('/users')
+  },
+}
+```
+
+call `apiGetAllUsers` in store
+`stores/User.ts`
+
+```ts
+import { defineStore } from 'pinia'
+import ApiService from '@/services/ApiService'
+import { User } from '../types'
+
+export const useUserStore = defineStore({
+  id: 'user',
+  state: () => ({
+    users: [] as User[],
+  }),
+  actions: {
+    getAllUser() {
+      return ApiService.apiGetAllUsers()
+        .then((response) => {
+          this.users = response.data
+        })
+        .catch((error) => {
+          throw error
+        })
+    },
+  },
+})
 ```
 
 ### Internationalization
@@ -238,10 +292,6 @@ AutoImport({
         'useMouse', // import { useMouse } from '@vueuse/core',
         // alias
         ['useFetch', 'useMyFetch'], // import { useFetch as useMyFetch } from '@vueuse/core',
-      ],
-      axios: [
-        // default imports
-        ['default', 'axios'], // import { default as axios } from 'axios',
       ],
       '[package-name]': [
         '[import-names]',
